@@ -10,26 +10,42 @@ public class MagicLightManager {
 	final int LOCAL_PORT = 5577;
 	final int REMOTE_PORT = 48899;
 	
-	private ArrayList<InetAddress> bulbAddresses;
+	// Create a type that includes the hardware name of the remote
+	public class RemoteDevice extends InetAddress {
+
+		RemoteDevice(String ipAddress, String ) {
+			super();
+			// TODO Auto-generated constructor stub
+		}
+		
+	}
+	
+	private ArrayList<InetAddress> MLAddresses;
+	ArrayList<MagicLightInterface> MLInterfaces;
 	
 	public MagicLightManager() throws IOException 
 	{
-		// Locate all lights
-		bulbAddresses = findAllMagicLights();
+		// Locate all lights (get IP addresses)
+		MLAddresses = findAllMagicLights();
+		
+		// Initialize bulb interface objects
+		MLInterfaces = new ArrayList<MagicLightInterface>();
+		for (InetAddress addr : MLAddresses){
+			MLInterfaces.add(new MagicLightInterface(addr, REMOTE_PORT));
+		}
 	}
 	
 	public ArrayList<InetAddress> findAllMagicLights() throws IOException  
 	{
-		// Send broadcast
+		// Send broadcast to get all bulbs to respond
 		DatagramSocket sock = new DatagramSocket(LOCAL_PORT);
 		sock.setBroadcast(true);
 		InetAddress broadcastIP = InetAddress.getByName("255.255.255.255");
-		String discoverMsg = "HF-A11ASSISTHREAD";
-		byte msg[] = discoverMsg.getBytes();
-		DatagramPacket d = new DatagramPacket(msg, msg.length);
-		d.setAddress(broadcastIP);
-		d.setPort(REMOTE_PORT);
-		sock.send(d);
+		byte msg[] = "HF-A11ASSISTHREAD".getBytes();
+		DatagramPacket discoverPacket = new DatagramPacket(msg, msg.length);
+		discoverPacket.setAddress(broadcastIP);
+		discoverPacket.setPort(REMOTE_PORT);
+		sock.send(discoverPacket);
 		
 		// Build list of IP addresses
 		sock.setSoTimeout(1500); // ms
@@ -50,10 +66,25 @@ public class MagicLightManager {
 				break;
 			}
 			
+			// IP address
 			addrs.add(pack.getAddress());
+			
+			// Get the bulb name (MAC address also available)
+			String data = new String(pack.getData(), "US-ASCII");
+			String bulbName;
+			try {
+				bulbName = data.split(",")[2];
+			}
+			catch (ArrayIndexOutOfBoundsException e){
+				System.out.println("Could not read information from bulb. Bulb name not recovered.");
+			}
+			
+			
 		}
 		
-		System.out.println("Found " + addrs.size() + " bulb IP" + (addrs.size() == 1 ? "" : "s"));
+		// Print results
+		int n = addrs.size();
+		System.out.println("Found " + n + " bulb IP" + (n == 1 ? "" : "s"));
 		
 		// Clean up
 		sock.close();	
