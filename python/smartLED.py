@@ -264,19 +264,20 @@ if __name__ == "__main__":
 
 
 	with smartLED() as led:
-		# led.turn_on()
+		led.turn_on()
+		# led.turn_off()
 	# Basic
-	# 	led.set_color(255,0,0)
-	# 	time.sleep(3)
-	# 	led.set_color(0,0,255)
-	# 	time.sleep(3)
-	# 	led.set_warm(50)
+		# led.set_color(255,0,0)
+		# time.sleep(3)
+		# led.set_color(0,0,255)
+		# time.sleep(3)
+		# led.set_warm(50)
 
 	# A bit more fancy
-	# 	duration = 10 # sec, total
-	# 	for x in range(0,255):
-	# 		led.set_warm(x)
-	# 		time.sleep(duration/255.0)
+		# duration = 10 # sec, total
+		# for x in range(0,255):
+		# 	led.set_warm(x)
+		# 	time.sleep(duration/255.0)
 	# 	led.turn_off()
 
 	# Learning how to set alarm
@@ -296,17 +297,19 @@ if __name__ == "__main__":
 
 
 		# A bunch of alarms
-		led.delete_alarm()
+		# led.delete_alarm()
 		# led.add_alarm("RGB", [255, 0, 0], 20, 30, 0, repeatDays=0xff)
 		# led.add_alarm("WARM", 50, 23, 59, 0, repeatDays=0, year=16, month=1, day=9)
 		# led.add_alarm("FUNCTION", 16, 4, 30, generateRepeatDays(["MON", "WED", "FRI", "SUN"]))
 
 		# Set all 6 at 1 minute increments starting at:
-		startTime = [6, 45] 
-		print "Sunrise starts at: " + str(startTime[0]) + ":" + str(startTime[1])
-		for x in range(0, 6):
-			intensity = int((x+1)**2 * 255.0/36.0)
-			led.add_alarm("WARM", intensity, startTime[0], startTime[1]+x, 0, repeatDays=0xff)
+		# led.delete_alarm()
+		# startTime = [7,10] 
+		# print "Sunrise starts at: " + str(startTime[0]) + ":" + str(startTime[1])
+		# for x in range(0, 6): 
+		#	intensity = int((x+1)**2 * 255.0/36.0)
+		#	led.add_alarm("WARM", intensity, startTime[0], startTime[1]+x, 0, repeatDays=0xff)
+
 		# led.set_warm(20)
 
 		# Check the set/get time functions
