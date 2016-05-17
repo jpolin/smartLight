@@ -4,38 +4,38 @@ import java.nio.channels.IllegalBlockingModeException;
 import java.io.*;
 import java.util.*;
 
-public class MagicLightManager {
+public class MLManager {
 
 	// Connection parameters
 	final int LOCAL_PORT = 5577;
 	final int REMOTE_PORT = 48899;
 	
 	// Create a type that includes the hardware name of the remote
-	public class RemoteDevice extends InetAddress {
-
-		RemoteDevice(String ipAddress, String ) {
-			super();
-			// TODO Auto-generated constructor stub
-		}
-		
-	}
+//	public class RemoteDevice extends InetAddress {
+//
+//		RemoteDevice(String ipAddress, String ) {
+//			super();
+//			// TODO Auto-generated constructor stub
+//		}
+//		
+//	}
 	
 	private ArrayList<InetAddress> MLAddresses;
-	ArrayList<MagicLightInterface> MLInterfaces;
+	ArrayList<MLInterface> MLInterfaces;
 	
-	public MagicLightManager() throws IOException 
+	public MLManager() throws IOException 
 	{
 		// Locate all lights (get IP addresses)
-		MLAddresses = findAllMagicLights();
+		MLAddresses = findAllMLs();
 		
 		// Initialize bulb interface objects
-		MLInterfaces = new ArrayList<MagicLightInterface>();
+		MLInterfaces = new ArrayList<MLInterface>();
 		for (InetAddress addr : MLAddresses){
-			MLInterfaces.add(new MagicLightInterface(addr, REMOTE_PORT));
+			MLInterfaces.add(new MLInterface(addr, REMOTE_PORT));
 		}
 	}
 	
-	public ArrayList<InetAddress> findAllMagicLights() throws IOException  
+	public ArrayList<InetAddress> findAllMLs() throws IOException  
 	{
 		// Send broadcast to get all bulbs to respond
 		DatagramSocket sock = new DatagramSocket(LOCAL_PORT);

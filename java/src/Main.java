@@ -6,10 +6,10 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-		MagicLightManager manager = new MagicLightManager();
+		MLManager manager = new MLManager();
 		}
 		catch (IOException e){
-			System.out.println("Failed to initialize MagicLightManager");
+			System.out.println("Failed to initialize MLManager");
 			return;
 		}
 	}
